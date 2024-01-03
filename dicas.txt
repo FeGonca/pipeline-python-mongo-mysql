@@ -1,0 +1,49 @@
+Quando estamos desenvolvendo um projeto, muitas vezes temos que lidar com informações sensíveis, como chaves de acesso, senhas, nomes de usuários(as) e outras configurações que não gostaríamos de expor publicamente, especialmente se o projeto for hospedado em um repositório público no GitHub.
+
+Nesses casos, podemos usar um arquivo .env para armazenar essas informações. O .env é um arquivo de texto simples que armazena variáveis de ambiente para um projeto específico. Ele é muito útil para esconder informações sensíveis, como senhas, chaves secretas ou qualquer outro tipo de dado que você não deseja expor em seu código fonte. Nele definimos variáveis de ambiente no seguinte formato:
+
+NOME_DA_VARIAVEL=valor_da_variavel
+COPIAR CÓDIGO
+Por exemplo, no nosso caso, poderíamos ter um arquivo .env assim:
+
+MONGODB_URI="mongodb+srv://millenagena:12345@cluster-pipeline.bsouxli.mongodb.net/?retryWrites=true&w=majority"
+DB_HOST="localhost"
+DB_USERNAME="millenagena"
+DB_PASSWORD="12345"
+COPIAR CÓDIGO
+Uma vez criado o arquivo .env, precisamos instalar a biblioteca python-dotenv que nos permite carregar essas variáveis de ambiente em nosso script Python. A instalação pode ser feita utilizando o gerenciador de pacotes pip:
+
+source venv/bin/activate
+COPIAR CÓDIGO
+pip install python-dotenv
+COPIAR CÓDIGO
+Depois disso, no nosso script, podemos carregar e usar essas variáveis da seguinte forma:
+
+import os
+from dotenv import load_dotenv
+import mysql.connector
+
+# Carrega as variáveis do arquivo .env no ambiente de trabalho
+load_dotenv()
+
+# A função os.getenv é usada para obter o valor das variáveis de ambiente
+host = os.getenv("DB_HOST")
+user = os.getenv("DB_USERNAME")
+password = os.getenv("DB_PASSWORD")
+
+cnx = mysql.connector.connect(
+    host=host,
+    user=user,
+    password=password
+)
+
+print(cnx)
+COPIAR CÓDIGO
+E também podemos aplicar esse processo para a variável uri no código de conexão do Python com o MongoDB. Assim, o conteúdo sensível é substituído por uri=os.getenv("MONGODB_URI") e a URI real é mantida segura no arquivo .env. Dessa maneira, os dados sensíveis não estão expostos no código, mas ainda podem ser facilmente acessados através das variáveis de ambiente.
+
+Lembre-se: não inclua o arquivo .env em seu controle de versão (como GitHub), pois isso pode expor todas as suas informações sensíveis. Geralmente, adiciona-se o .env ao arquivo .gitignore para evitar que ele seja enviado para um repositório público.
+
+Agora você sabe como utilizar o arquivo .env para proteger informações sensíveis em seus projetos Python! Para maiores informações, consulte a documentação oficial do python-dotenv.
+
+ DISCUTIR NO FORUM
+PRÓXIMA ATIVIDADE
